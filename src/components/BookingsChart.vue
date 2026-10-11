@@ -4,7 +4,10 @@
 
 <script setup>
 import { onMounted, onBeforeUnmount, ref } from 'vue'
-import Chart from 'chart.js/auto'
+import { Chart, BarController, BarElement, CategoryScale, LinearScale } from 'chart.js'
+
+// Registrera bara det stapeldiagrammet behöver
+Chart.register(BarController, BarElement, CategoryScale, LinearScale)
 
 const props = defineProps({
   months: { type: Array, required: true },

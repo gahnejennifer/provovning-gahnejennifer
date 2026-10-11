@@ -30,7 +30,6 @@ import { computed, onMounted, ref } from 'vue'
 import { useBookingsStore } from '../stores/bookings'
 import { formatDate } from '../utils/date'
 import { cancelFee, formatAmount } from '../utils/fee'
-import _ from 'lodash'
 import StatusChip from '../components/StatusChip.vue'
 
 const bookings = useBookingsStore()
@@ -39,12 +38,16 @@ const query = ref('')
 const filtered = computed(() => {
   const q = query.value.trim().toLowerCase()
   const list = (bookings.bookings || []).filter((b) => !q || `${b.court} ${b.partner}`.toLowerCase().includes(q))
-  return _.sortBy(list, 'date')
+  return [...list].sort((a, b) => a.date.localeCompare(b.date))
 })
 
-const onSearch = _.debounce((event) => {
-  query.value = event.target.value
-}, 250)
+let timer
+const onSearch = (event) => {
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    query.value = event.target.value
+  }, 250)
+}
 
 onMounted(() => {
   if (!bookings.bookings) bookings.load()
