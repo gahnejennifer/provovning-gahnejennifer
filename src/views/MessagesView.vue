@@ -6,8 +6,8 @@
     <div v-else>
       <article v-for="m in messages" :key="m.id" class="card">
         <p class="hint">{{ formatDate(m.date) }} · {{ m.from }}</p>
-        <!-- v-html så att radbrytningar och fetstil från hallen visas rätt -->
-        <p v-html="m.text"></p>
+        <!-- Texten visas som text: {{ }} gör om < och > till tecken, så HTML i ett meddelande körs aldrig -->
+        <p>{{ m.text }}</p>
       </article>
       <p v-if="messages.length === 0" class="hint">Inga meddelanden.</p>
     </div>
